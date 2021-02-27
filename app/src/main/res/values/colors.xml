@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- MATERIAL THEME COLOR -->
+    <color name="color_primary">#0421ac</color>
+    <color name="color_primary_variant">#00007b</color>
+    <color name="color_secondary">#fafafa</color>
+    <color name="color_secondary_variant">#c7c7c7</color>
+
+    <color name="color_on_primary">#ffffff</color>
+    <color name="color_on_secondary">#000000</color>
+
+</resources>
