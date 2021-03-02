@@ -1,4 +1,4 @@
-package com.example.pruebakotlin.Fragments
+package com.example.pruebakotlin.Negocio.Fragments.Home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

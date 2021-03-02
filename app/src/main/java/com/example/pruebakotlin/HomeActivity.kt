@@ -1,19 +1,16 @@
 package com.example.pruebakotlin
 
 import android.Manifest.permission
-import android.app.Activity
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.example.pruebakotlin.Fragments.BuscadorFragment
-import com.example.pruebakotlin.Fragments.HomeFragment
-import com.example.pruebakotlin.Fragments.PerfilFragment
+import com.example.pruebakotlin.Negocio.Fragments.Home.BuscadorFragment
+import com.example.pruebakotlin.Negocio.Fragments.Home.HomeFragment
+import com.example.pruebakotlin.Negocio.Fragments.Home.PerfilFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -28,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
 
     var bandera = true
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,11 +38,14 @@ class HomeActivity : AppCompatActivity() {
 
         setContentView(R.layout.ativity_menu)
 
+
         val bottom_navigation=findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         val home_fragment= HomeFragment()
-        val buscador_fragment=BuscadorFragment()
-        val perfil_fragment=PerfilFragment()
+        val buscador_fragment=
+            BuscadorFragment()
+        val perfil_fragment=
+            PerfilFragment()
 
         ValidarPermiso()
 

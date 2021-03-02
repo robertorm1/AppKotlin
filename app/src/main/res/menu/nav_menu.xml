@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/Buscador"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_add_circle"
         android:title="Nuevo"/>
     <item
         android:id="@+id/Perfil"

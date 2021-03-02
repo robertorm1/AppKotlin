@@ -14,21 +14,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PruebaKotlin">
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".RegistroActivity" />
+        <activity android:name=".RegisterActivity"/>
         <activity android:name=".OnboardingActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SplashScreenActivity">
+        </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".Ejemplos.MapaJava" />
-        <activity android:name=".Ejemplos.MainActivity" />
-        <activity android:name=".Ejemplos.MapaKotlin" />
+        <activity android:name=".ExamplesMapBox.MapaJava" />
+        <activity android:name=".ExamplesMapBox.MainActivity" />
+        <activity android:name=".ExamplesMapBox.MapaKotlin" />
     </application>
 
 </manifest>

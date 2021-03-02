@@ -1,4 +1,4 @@
-package com.example.pruebakotlin.Ejemplos
+package com.example.pruebakotlin.ExamplesMapBox
 
 class Programmer(val name: String, var age: Int,
                  val languages: Array<Language>,

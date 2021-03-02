@@ -4,11 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.HomeFragment">
-
-    <include
-        layout="@layout/bottom_sheet"
-        android:id="@+id/include_bottom_sheet"/>
+    tools:context=".Negocio.Fragments.Home.HomeFragment">
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/BtnAdd"
@@ -95,6 +91,10 @@
     </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/bottom_sheet"
+        android:id="@+id/include_bottom_sheet"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package com.example.pruebakotlin.Ejemplos;
+package com.example.pruebakotlin.ExamplesMapBox;
 
 import android.app.Activity;
 import android.app.Dialog;

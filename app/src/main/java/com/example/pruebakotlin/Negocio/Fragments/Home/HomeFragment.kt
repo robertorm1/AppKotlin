@@ -1,4 +1,4 @@
-package com.example.pruebakotlin.Fragments
+package com.example.pruebakotlin.Negocio.Fragments.Home
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -13,9 +13,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pruebakotlin.Negocio.Adapters.NegocioAdapter
+import com.example.pruebakotlin.Persistencia.Entity.Negocio
 import com.example.pruebakotlin.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -31,7 +34,6 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.plugins.annotation.Line
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 
@@ -48,7 +50,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(activity as Activity, getString(R.string.mapbox_access_token))
-
     }
 
     override fun onCreateView(
@@ -64,9 +65,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         val BtnAdd =rootView!!.findViewById<ExtendedFloatingActionButton>(R.id.BtnAdd);
 
         //REFERENCIA AL LAYOUT INCLUDE
-        val view = rootView!!.findViewById<ConstraintLayout>(R.id.include_bottom_sheet)
-
+        val view = rootView!!.findViewById<LinearLayout>(R.id.include_bottom_sheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(view)
+        val lst=view.findViewById<RecyclerView>(R.id.lst_negocios)
 
         bottomSheetBehavior.addBottomSheetCallback(object :BottomSheetBehavior.BottomSheetCallback(){
             override fun onStateChanged(bottomSheet: View, state: Int) {
@@ -95,6 +96,78 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
 
         BtnAdd.setOnClickListener{
         }
+
+        var negocio: ArrayList<Negocio> = ArrayList()
+        negocio.add(
+            Negocio(
+                "Sucursal1",
+                "Libertad 22",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal2",
+                "Morelos",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal3",
+                "5 de mayo",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal4",
+                "condominio iris 22",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal5",
+                "Benito Juarez",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal6",
+                "Lopez Rayon",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal7",
+                "Aldama",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal8",
+                "Allende",
+                R.drawable.ic_man
+            )
+        )
+        negocio.add(
+            Negocio(
+                "Sucursal9",
+                "Lopez mateos",
+                R.drawable.ic_man
+            )
+        )
+
+        val adapter =
+            NegocioAdapter(negocio)
+        var layoutManager:RecyclerView.LayoutManager=LinearLayoutManager(context)
+        lst.layoutManager=layoutManager
+        lst.adapter=adapter
+
 
         return rootView
     }

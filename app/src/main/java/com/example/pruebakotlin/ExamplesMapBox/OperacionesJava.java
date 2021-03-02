@@ -1,4 +1,4 @@
-package com.example.pruebakotlin.Ejemplos;
+package com.example.pruebakotlin.ExamplesMapBox;
 
 public class OperacionesJava {
 

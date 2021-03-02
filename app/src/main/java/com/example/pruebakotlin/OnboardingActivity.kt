@@ -1,24 +1,23 @@
 package com.example.pruebakotlin
 
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.pruebakotlin.Adapters.ViePagerAdapter2
-import com.example.pruebakotlin.Adapters.ViewPagerAdapter
-import com.example.pruebakotlin.OnboardingFragments.FirstFragment
-import com.example.pruebakotlin.OnboardingFragments.SecondFragment
-import com.example.pruebakotlin.OnboardingFragments.ThirdFragment
+import com.example.pruebakotlin.Negocio.Adapters.ViePagerAdapter2
+import com.example.pruebakotlin.Negocio.Adapters.ViewPagerAdapter
+import com.example.pruebakotlin.Negocio.Fragments.Onboarding.FirstFragment
+import com.example.pruebakotlin.Negocio.Fragments.Onboarding.SecondFragment
+import com.example.pruebakotlin.Negocio.Fragments.Onboarding.ThirdFragment
+import com.example.pruebakotlin.Persistencia.Entity.OnboardingItem
 import com.google.android.material.button.MaterialButton
 
 class OnboardingActivity : AppCompatActivity() {
@@ -42,11 +41,12 @@ class OnboardingActivity : AppCompatActivity() {
             SecondFragment(),
             ThirdFragment()
         )
-        val adapterPager = ViewPagerAdapter(
-            fragmentList,
-            this.supportFragmentManager,
-            lifecycle
-        )
+        val adapterPager =
+            ViewPagerAdapter(
+                fragmentList,
+                this.supportFragmentManager,
+                lifecycle
+            )
        // viewPager?.adapter=adapterPager
         //viewPager.currentItem = 1
 
@@ -79,22 +79,23 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun setOnbardingItems(){
 
-       viewPagerAdapter2 = ViePagerAdapter2(
-           listOf(
-               OnboardingItem(
-                   onboardingImage = R.raw.lottie_navigation,
-                   onboardingText = "Localiza y navega a tus negocios facilmente"
-               ),
-               OnboardingItem(
-                   onboardingImage = R.raw.lottie_check,
-                   onboardingText = "Confirma y actualiza ubicaciones guardadas"
-               ),
-               OnboardingItem(
-                   onboardingImage = R.raw.lottie_search,
-                   onboardingText = "Busca y guarda la ubicacion de tus negocios"
+       viewPagerAdapter2 =
+           ViePagerAdapter2(
+               listOf(
+                   OnboardingItem(
+                       onboardingImage = R.raw.lottie_navigation,
+                       onboardingText = "Localiza y navega a tus negocios facilmente"
+                   ),
+                   OnboardingItem(
+                       onboardingImage = R.raw.lottie_check,
+                       onboardingText = "Confirma y actualiza ubicaciones guardadas"
+                   ),
+                   OnboardingItem(
+                       onboardingImage = R.raw.lottie_search,
+                       onboardingText = "Busca y guarda la ubicacion de tus negocios"
+                   )
                )
            )
-       )
 
         viewPager?.adapter=viewPagerAdapter2
 
