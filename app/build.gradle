@@ -32,6 +32,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures{
+      viewBinding = true
+    }
 }
 
 repositories {
@@ -81,6 +85,9 @@ dependencies {
     //PICCASO
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //BUTTER KNIFE
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
 
 }

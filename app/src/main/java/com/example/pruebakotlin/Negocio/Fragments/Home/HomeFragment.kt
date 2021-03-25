@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pruebakotlin.Negocio.Adapters.NegocioAdapter
 import com.example.pruebakotlin.Persistencia.Entity.Negocio
 import com.example.pruebakotlin.R
+import com.example.pruebakotlin.databinding.BottomSheetBinding
+import com.example.pruebakotlin.databinding.FragmentHomeBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,33 +41,44 @@ import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 
 class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener {
 
-    private var rootView:View?=null
-    private var mapboxMap: MapboxMap? = null
-    private var mapView: MapView? = null
-    private var markerViewManager: MarkerViewManager? = null
-    private var markerView: MarkerView? = null
+    //ViewBinding Fragment
+    private var _binding:FragmentHomeBinding?= null
+    private val binding get() = _binding!!
 
-    private var originLocation: LatLng? = null
+    //Referencia a elementos de mapa
+    private lateinit var mapboxMap: MapboxMap
+    private lateinit var mapView: MapView
+    private lateinit var markerViewManager: MarkerViewManager
+    private lateinit var  markerView: MarkerView
+    private lateinit var originLocation: LatLng
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Mapbox.getInstance(activity as Activity, getString(R.string.mapbox_access_token))
-    }
+    //private var mapboxMap: MapboxMap? = null
+    //private var mapView: MapView? = null
+    //private var markerViewManager: MarkerViewManager? = null
+    //private var markerView: MarkerView? = null
+    //private var originLocation: LatLng? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater,container,false);
+        //rootView = inflater.inflate(R.layout.fragment_home, container, false)
+        return binding.root
+    }
 
-        rootView = inflater.inflate(R.layout.fragment_home, container, false)
-        mapView?.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        val BtnLayer =rootView!!.findViewById<FloatingActionButton>(R.id.BtnLayer);
-        val BtnUbicacion = rootView!!.findViewById<FloatingActionButton>(R.id.BtnUbication);
-        val BtnAdd =rootView!!.findViewById<ExtendedFloatingActionButton>(R.id.BtnAdd);
+        Mapbox.getInstance(activity as Activity, getString(R.string.mapbox_access_token))
+        mapView.onCreate(savedInstanceState)
+        mapView = binding.mapView1
+        mapView.getMapAsync(this)
 
         //REFERENCIA AL LAYOUT INCLUDE
-        val view = rootView!!.findViewById<LinearLayout>(R.id.include_bottom_sheet)
+       // val view = rootView!!.findViewById<LinearLayout>(R.id.include_bottom_sheet)
+
+        val view = binding.includeBottomSheet as LinearLayout
         val bottomSheetBehavior = BottomSheetBehavior.from(view)
         val lst=view.findViewById<RecyclerView>(R.id.lst_negocios)
 
@@ -84,20 +97,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
             }
         })
 
-        mapView = rootView!!.findViewById(R.id.mapView1)
-        mapView?.getMapAsync(this)
 
-        BtnLayer.setOnClickListener {
+        binding.BtnLayer.setOnClickListener {
         }
 
-        BtnUbicacion.setOnClickListener{
-            setCameraPosition(originLocation!!)
+        binding.BtnUbication.setOnClickListener{
+            setCameraPosition(originLocation)
         }
 
-        BtnAdd.setOnClickListener{
+        binding.BtnAdd.setOnClickListener{
         }
 
         var negocio: ArrayList<Negocio> = ArrayList()
+
         negocio.add(
             Negocio(
                 "Sucursal1",
@@ -162,15 +174,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
             )
         )
 
-        val adapter =
-            NegocioAdapter(negocio)
+        val adapter = NegocioAdapter(negocio)
         var layoutManager:RecyclerView.LayoutManager=LinearLayoutManager(context)
         lst.layoutManager=layoutManager
         lst.adapter=adapter
-
-
-        return rootView
     }
+
 
    override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
@@ -190,7 +199,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
     private fun setCameraPosition(location: LatLng) {
         val position = CameraPosition.Builder()
             .target(LatLng(location.latitude, location.longitude))
-            .zoom(mapboxMap!!.getMaxZoomLevel() - 8)
+            .zoom(mapboxMap.getMaxZoomLevel() - 8)
             //.bearing(50.0) //.tilt(30.0)
             .build()
         mapboxMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
@@ -204,7 +213,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         imageView.layoutParams = params
         markerView = MarkerView(LatLng(location.latitude, location.longitude), imageView)
         imageView.setOnClickListener { v: View? -> openDialog() }
-        markerViewManager!!.addMarker(markerView!!)
+        markerViewManager.addMarker(markerView)
     }
 
     private fun openDialog() {
@@ -255,17 +264,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
     @SuppressLint("MissingPermission")
     private fun enabledLocation(loadedMapStyle: Style) {
         if (ValidarPermiso()) {
-            val locationComponent = mapboxMap!!.locationComponent
+
+            val locationComponent = mapboxMap.locationComponent
             locationComponent.activateLocationComponent(
                 LocationComponentActivationOptions.builder(activity as Activity, loadedMapStyle)
                     .build()
             )
-
             locationComponent.isLocationComponentEnabled = true
             locationComponent.cameraMode = CameraMode.TRACKING
             locationComponent.renderMode = RenderMode.COMPASS
             originLocation = LatLng(locationComponent.lastKnownLocation)
-            setCameraPosition(originLocation!!)
+            setCameraPosition(originLocation)
 
         }
         else{
@@ -275,37 +284,37 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
 
     override fun onResume() {
         super.onResume()
-        mapView!!.onResume()
+        mapView.onResume()
     }
 
     override fun onStart() {
         super.onStart()
-        mapView?.onStart()
+        mapView.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mapView?.onStop()
+        mapView.onStop()
     }
 
     override fun onPause() {
         super.onPause()
-        mapView!!.onPause()
+        mapView.onPause()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView!!.onLowMemory()
+        mapView.onLowMemory()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mapView!!.onDestroy()
+        mapView.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        mapView?.onSaveInstanceState(outState)
+        mapView.onSaveInstanceState(outState)
     }
 
 }

@@ -10,8 +10,8 @@ import com.airbnb.lottie.LottieDrawable
 import com.example.pruebakotlin.Persistencia.Entity.OnboardingItem
 import com.example.pruebakotlin.R
 
-class ViePagerAdapter2(private val onboardingItems:List<OnboardingItem>):
-    RecyclerView.Adapter<ViePagerAdapter2.OnboardingItemViewHolder>() {
+class PagerAdapterOnboarding(private val onboardingItems:List<OnboardingItem>):
+    RecyclerView.Adapter<PagerAdapterOnboarding.OnboardingItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnboardingItemViewHolder {
       val view =  LayoutInflater.from(parent.context).inflate(R.layout.item_viewpager,parent,false)

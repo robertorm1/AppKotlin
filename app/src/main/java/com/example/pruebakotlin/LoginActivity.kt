@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.example.pruebakotlin.databinding.ActivityLoginBinding
+import com.example.pruebakotlin.databinding.ActivityMainBinding
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -16,52 +18,48 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
+    //Firebase Auth
     private lateinit var auth: FirebaseAuth
-    private lateinit var TxtUsuario:TextInputEditText
-    private lateinit var TxtPassword:TextInputEditText
+    //ViewBinding
+    private lateinit var binding:ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //INICIALIAR FIREBASE AUTH
         auth = Firebase.auth
 
-        val BtnIngreso=findViewById<MaterialButton>(R.id.BtnIngresar);
-        val BtnRegistrar=findViewById<MaterialButton>(R.id.BtnRegistrar);
-        TxtUsuario=findViewById<TextInputEditText>(R.id.TxtUsuario)
-        TxtPassword=findViewById<TextInputEditText>(R.id.TxtPassword)
-
-
-        BtnIngreso.setOnClickListener(View.OnClickListener {
+        binding.BtnIngresar.setOnClickListener(View.OnClickListener {
            setupLogin()
         })
 
-        BtnRegistrar.setOnClickListener(View.OnClickListener {
+        binding.BtnRegistrar.setOnClickListener(View.OnClickListener {
             val intent = Intent(this,RegisterActivity::class.java)
             startActivity(intent)
             finish()
         })
 
-      /*val networkConecction = NetworkConecction(applicationContext)
-        networkConecction.observe(this, Observer { isConnect ->
-            if (isConnect){
-                ShowAlert("Conectado")
-            }else{
-                ShowAlert("Desconectado")
-
-            }
-
-        })*/
-
     }
 
+    private fun observadorInternet(){
+        /*val networkConecction = NetworkConecction(applicationContext)
+       networkConecction.observe(this, Observer { isConnect ->
+           if (isConnect){
+               ShowAlert("Conectado")
+           }else{
+               ShowAlert("Desconectado")
+           }
+
+       })*/
+    }
 
     private fun setupLogin(){
 
-        val email:String=TxtUsuario.text.toString().trim()
-        val password:String=TxtPassword.text.toString().trim()
+        val email:String=binding.TxtUsuario.text.toString().trim()
+        val password:String=binding.TxtPassword.text.toString().trim()
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -81,16 +79,6 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun ShowAlert(mensaje: String){
-
-        val alert = MaterialAlertDialogBuilder(this)
-            .setTitle("Internet")
-            .setMessage(mensaje)
-            .setPositiveButton("Aceptar", null)
-
-        alert.show()
-    }
-
     private fun savePreferences(email:String){
         //GUARDAR DATOS DE USUARIO EN PREFERENCIAS
         val preferences = getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
@@ -103,4 +91,5 @@ class LoginActivity : AppCompatActivity() {
         super.onBackPressed()
         finish()
     }
+
 }

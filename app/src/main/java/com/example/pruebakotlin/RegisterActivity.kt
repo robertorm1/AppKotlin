@@ -3,12 +3,17 @@ package com.example.pruebakotlin
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.pruebakotlin.Persistencia.Entity.User
+import com.example.pruebakotlin.Persistencia.Retrofit.retrofitClass
+import com.example.pruebakotlin.Persistencia.Retrofit.serviceRetrofit
+import com.example.pruebakotlin.databinding.ActivityLoginBinding
+import com.example.pruebakotlin.databinding.ActivityRegistroBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -21,49 +26,41 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var TxtEmail: TextInputEditText
-    private lateinit var TxtNombreUsr: TextInputEditText
-    private lateinit var TxtPasswordR: TextInputEditText
 
-    private lateinit var TxtErrPass: TextInputLayout
-    private lateinit var TxtErrEmail: TextInputLayout
-
+    //Firebase Auth
     private lateinit var auth: FirebaseAuth
-
+    //ViewBinding
+    private lateinit var binding: ActivityRegistroBinding
+    //Codigo de validación activityResult
     private val RC_SIGN_IN = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //INICIALIAR FIREBASE AUTH
         auth = Firebase.auth
 
-        val BtnIniciaSesion = findViewById<TextView>(R.id.TxtIniciaSesion)
-        val BtnRegistrar = findViewById<MaterialButton>(R.id.BtnRegistroUser)
-        val BtnGoogle = findViewById<MaterialButton>(R.id.BtnGoogle);
-
-        TxtEmail = findViewById<TextInputEditText>(R.id.TxtEmail)
-        TxtNombreUsr = findViewById<TextInputEditText>(R.id.TxtNombreUsuario)
-        TxtPasswordR = findViewById<TextInputEditText>(R.id.TxtRegistroPassword)
-        TxtErrPass= findViewById<TextInputLayout>(R.id.TxtErrPassword)
-        TxtErrEmail=findViewById<TextInputLayout>(R.id.TxtErrEmail)
-
-        BtnIniciaSesion.setOnClickListener(View.OnClickListener {
+        binding.TxtIniciaSesion.setOnClickListener(View.OnClickListener {
             val intent: Intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         })
 
-        BtnRegistrar.setOnClickListener(View.OnClickListener {
+        binding.BtnRegistroUser.setOnClickListener(View.OnClickListener {
             setupRegistro()
         })
 
-        BtnGoogle.setOnClickListener(View.OnClickListener {
+        binding.BtnGoogle.setOnClickListener(View.OnClickListener {
 
             val gso =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -85,9 +82,9 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupRegistro(){
 
-        val usr:String=TxtNombreUsr.text.toString()
-        val email:String=TxtEmail.text.toString().trim()
-        val pass:String=TxtPasswordR.text.toString().trim()
+        val usr:String=binding.TxtNombreUsuario.text.toString()
+        val email:String=binding.TxtEmail.text.toString().trim()
+        val pass:String=binding.TxtRegistroPassword.text.toString().trim()
 
         if (usr.isNotEmpty() && email.isNotEmpty() && pass.isNotEmpty()){
 
@@ -116,17 +113,17 @@ class RegisterActivity : AppCompatActivity() {
         val country:Boolean=true
 
         when(country){
-            !validarEmail(TxtEmail.text.toString().trim()) -> {
-                TxtErrEmail.error = "*El correo no tiene el formarto correcto"
+            !validarEmail(binding.TxtEmail.text.toString().trim()) -> {
+                binding.TxtErrEmail.error = "*El correo no tiene el formarto correcto"
                 return false
             }
-            !validarPass(TxtPasswordR.text.toString().trim()) -> {
-                TxtErrPass.error = "*La contraseña debe ser mayor a 6 caracteres"
+            !validarPass(binding.TxtRegistroPassword.text.toString().trim()) -> {
+                binding.TxtErrPassword.error = "*La contraseña debe ser mayor a 6 caracteres"
                 return false
             }
             else ->{
-                TxtErrEmail.error=null
-                TxtErrPass.error=null
+                binding.TxtErrEmail.error=null
+                binding.TxtErrPassword.error=null
                 return true
             }
         }
@@ -138,7 +135,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun validarPass(pass: String):Boolean{
-        if (TxtPasswordR.length() >= 6 ){
+        if (binding.TxtRegistroPassword.length() >= 6 ){
             return true
         }
         return false
@@ -187,6 +184,23 @@ class RegisterActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor =  preferences.edit()
         editor.putString("user", email)
         editor.apply()
+    }
+
+    private fun saveUser(){
+        val api: serviceRetrofit? = retrofitClass().getIntanciaRetrofit().getService()
+        val user: User = User(binding.TxtEmail.text.toString(),binding.TxtNombreUsuario.text.toString(),true)
+        val call: Call<JsonObject> = api!!.postUserInsert(user)
+        call.enqueue(object:Callback<JsonObject>{
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.isSuccessful){
+                    Toast.makeText(applicationContext,"Correcto",Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Toast.makeText(applicationContext,t.message.toString(),Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     override fun onBackPressed() {

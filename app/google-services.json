@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "309999722412",
-    "project_id": "pruebakotlin-70692",
-    "storage_bucket": "pruebakotlin-70692.appspot.com"
+    "project_number": "264468933190",
+    "project_id": "appmapa-abc7b",
+    "storage_bucket": "appmapa-abc7b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:309999722412:android:6bc8703ff65967ce4aa409",
+        "mobilesdk_app_id": "1:264468933190:android:dd0be1c3caad08fef1f847",
         "android_client_info": {
           "package_name": "com.example.pruebakotlin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "309999722412-p1kj92257t0s08ogga6i8g5kmtl0cimn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.pruebakotlin",
-            "certificate_hash": "7964d3dad6607cec75307ec65b66de2200f5cf97"
-          }
-        },
-        {
-          "client_id": "309999722412-plfj20olth87ddpsb7mc9mtdl2al5s4r.apps.googleusercontent.com",
+          "client_id": "264468933190-dcs7qbnqb55jedkkgqdfs50cem662c18.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDMCbDlkD-zKloUTJVi5Vh5CVjaM5FRZRE"
+          "current_key": "AIzaSyCAl5V9WcL1nD--uKyzs2ExCKv9tTwpNok"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "309999722412-plfj20olth87ddpsb7mc9mtdl2al5s4r.apps.googleusercontent.com",
+              "client_id": "264468933190-dcs7qbnqb55jedkkgqdfs50cem662c18.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

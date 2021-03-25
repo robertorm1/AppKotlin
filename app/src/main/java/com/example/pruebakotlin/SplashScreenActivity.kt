@@ -8,7 +8,8 @@ import android.os.Handler
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    lateinit var handler:Handler
+    private lateinit var handler:Handler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -27,6 +28,7 @@ class SplashScreenActivity : AppCompatActivity() {
         },3000)
     }
 
+    //GUDAR DATOS DE SESION EN PREFERENCIAS
     private fun sesion():Boolean{
         val preferences = getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
         val email: String? =preferences.getString("user",null)

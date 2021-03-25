@@ -9,24 +9,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.pruebakotlin.Negocio.Adapters.ViePagerAdapter2
-import com.example.pruebakotlin.Negocio.Adapters.ViewPagerAdapter
-import com.example.pruebakotlin.Negocio.Fragments.Onboarding.FirstFragment
-import com.example.pruebakotlin.Negocio.Fragments.Onboarding.SecondFragment
-import com.example.pruebakotlin.Negocio.Fragments.Onboarding.ThirdFragment
+import com.example.pruebakotlin.Negocio.Adapters.PagerAdapterOnboarding
 import com.example.pruebakotlin.Persistencia.Entity.OnboardingItem
 import com.google.android.material.button.MaterialButton
 
 class OnboardingActivity : AppCompatActivity() {
 
-    private lateinit var viewPagerAdapter2: ViePagerAdapter2
+    private lateinit var viewPagerAdapter: PagerAdapterOnboarding
     private lateinit var indicatorContainer: LinearLayout
     private lateinit var BtnFin:MaterialButton
-
-    var viewPager:ViewPager2? = null
+    private lateinit var viewPager:ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,20 +29,6 @@ class OnboardingActivity : AppCompatActivity() {
         viewPager = findViewById<ViewPager2>(R.id.PagerOnboarding)
         BtnFin = findViewById<MaterialButton>(R.id.BtnFinalizar)
         BtnFin.visibility = View.INVISIBLE
-
-        val fragmentList= arrayListOf<Fragment>(
-            FirstFragment(),
-            SecondFragment(),
-            ThirdFragment()
-        )
-        val adapterPager =
-            ViewPagerAdapter(
-                fragmentList,
-                this.supportFragmentManager,
-                lifecycle
-            )
-       // viewPager?.adapter=adapterPager
-        //viewPager.currentItem = 1
 
         setOnbardingItems()
         setupIndicator()
@@ -60,11 +40,11 @@ class OnboardingActivity : AppCompatActivity() {
             finish()
         }
 
-        viewPager?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 setCurrentIndicator(position)
-                if (position == viewPagerAdapter2.itemCount - 1) {
+                if (position == viewPagerAdapter.itemCount - 1) {
                     BtnFin.visibility = VISIBLE
                 }else {
                     BtnFin.visibility = INVISIBLE
@@ -73,14 +53,14 @@ class OnboardingActivity : AppCompatActivity() {
             }
         })
 
-        (viewPager?.getChildAt(0) as RecyclerView).overScrollMode =RecyclerView.OVER_SCROLL_NEVER
+        (viewPager.getChildAt(0) as RecyclerView).overScrollMode =RecyclerView.OVER_SCROLL_NEVER
 
     }
 
     private fun setOnbardingItems(){
 
-       viewPagerAdapter2 =
-           ViePagerAdapter2(
+       viewPagerAdapter =
+           PagerAdapterOnboarding(
                listOf(
                    OnboardingItem(
                        onboardingImage = R.raw.lottie_navigation,
@@ -97,13 +77,13 @@ class OnboardingActivity : AppCompatActivity() {
                )
            )
 
-        viewPager?.adapter=viewPagerAdapter2
+        viewPager.adapter=viewPagerAdapter
 
     }
 
     private  fun setupIndicator(){
         indicatorContainer = findViewById(R.id.IndicatorContainer)
-        val indicators= arrayOfNulls<ImageView>(viewPagerAdapter2.itemCount)
+        val indicators= arrayOfNulls<ImageView>(viewPagerAdapter.itemCount)
         val layoutParams: LinearLayout.LayoutParams=
             LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
         layoutParams.setMargins(8, 0, 8, 0)

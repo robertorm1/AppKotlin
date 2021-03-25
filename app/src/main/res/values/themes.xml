@@ -34,8 +34,6 @@
         <item name="boxCornerRadiusBottomStart">10dp</item>
         <item name="boxCornerRadiusTopEnd">10dp</item>
         <item name="boxCornerRadiusTopStart">10dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
         <item name="endIconMode">clear_text</item>
         <item name="errorEnabled">true</item>
     </style>
@@ -43,7 +41,11 @@
     <style name="ButtonBaseOutline" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/color_primary</item>
         <item name="cornerRadius">10dp</item>
+    </style>
 
+    <style name="ButtonBase" parent="Widget.MaterialComponents.Button">
+        <item name="strokeColor">@color/color_primary</item>
+        <item name="cornerRadius">10dp</item>
     </style>
 
 </resources>

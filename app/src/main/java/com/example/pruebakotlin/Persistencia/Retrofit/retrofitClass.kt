@@ -6,16 +6,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-class retrofitClass {
+ class retrofitClass {
 
-    private lateinit var service:serviceRetrofit
+    private lateinit var miInstance:retrofitClass
     private val urlBase:String="https://api.github.com"
 
-    init {
-        buildRetrofit()
-    }
+     var apiPost: serviceRetrofit? = null
 
-    fun getResquestHeader():OkHttpClient{
+     init {
+         buildRetrofit();
+     }
+
+     @Synchronized
+     fun getIntanciaRetrofit(): retrofitClass {
+         if (miInstance == null) {
+             miInstance = retrofitClass()
+         }
+         return miInstance
+     }
+
+
+     fun getResquestHeader():OkHttpClient{
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(30,TimeUnit.SECONDS)
             .writeTimeout(30,TimeUnit.SECONDS)
@@ -31,11 +42,11 @@ class retrofitClass {
             .addConverterFactory(GsonConverterFactory.create())
             .client(getResquestHeader())
             .build()
-        this.service=retrofit.create(serviceRetrofit::class.java)
+        this.apiPost=retrofit.create(serviceRetrofit::class.java)
     }
 
-    fun getService():serviceRetrofit{
-        return this.service
+    fun getService(): serviceRetrofit? {
+        return this.apiPost
     }
 
 }

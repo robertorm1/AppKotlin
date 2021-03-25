@@ -6,19 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.pruebakotlin.R
+import com.example.pruebakotlin.databinding.FragmentBuscadorBinding
+import com.example.pruebakotlin.databinding.FragmentPerfilBinding
 
 
 class PerfilFragment : Fragment() {
 
-    private var rootView:View?=null
+    //ViewBinding Fragment
+    private var _binding: FragmentPerfilBinding?= null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView= inflater.inflate(R.layout.fragment_perfil, container, false)
+        _binding = FragmentPerfilBinding.inflate(inflater,container,false)
+        return binding.root
+    }
 
-        return rootView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
 }
