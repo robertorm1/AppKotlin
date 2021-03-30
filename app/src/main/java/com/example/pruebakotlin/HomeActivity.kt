@@ -9,16 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import butterknife.BindView
-import com.example.pruebakotlin.Negocio.Fragments.Home.BuscadorFragment
-import com.example.pruebakotlin.Negocio.Fragments.Home.HomeFragment
-import com.example.pruebakotlin.Negocio.Fragments.Home.PerfilFragment
+import com.example.pruebakotlin.Negocio.Fragments.BuscadorFragment
+import com.example.pruebakotlin.Negocio.Fragments.HomeFragment
+import com.example.pruebakotlin.Negocio.Fragments.PerfilFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class HomeActivity : AppCompatActivity() {
 
-    @BindView(R.id.bottom_navigation)
-    lateinit var bottom_navigation:BottomNavigationView
 
     //ARREGLO DE PERMISOS PARA EL FUNCIONAMIENTO DEL HERE
     private val PERMISOS = arrayOf(
@@ -43,11 +41,14 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.ativity_menu)
 
 
-        //val bottom_navigation=findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val bottom_navigation=findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        val home_fragment= HomeFragment()
-        val buscador_fragment= BuscadorFragment()
-        val perfil_fragment= PerfilFragment()
+        val home_fragment=
+            HomeFragment()
+        val buscador_fragment=
+            BuscadorFragment()
+        val perfil_fragment=
+            PerfilFragment()
 
         ValidarPermiso()
 

@@ -61,6 +61,8 @@ class LoginActivity : AppCompatActivity() {
         val email:String=binding.TxtUsuario.text.toString().trim()
         val password:String=binding.TxtPassword.text.toString().trim()
 
+        if(email.isNotEmpty() && password.isEmpty()){
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -77,6 +79,10 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this,task.exception.toString(),Toast.LENGTH_SHORT).show()
                 }
             }
+
+        }else{
+            Toast.makeText(this,"Favor de llenar los campos", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun savePreferences(email:String){

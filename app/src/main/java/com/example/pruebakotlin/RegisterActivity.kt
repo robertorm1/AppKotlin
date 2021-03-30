@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.TextView
@@ -33,7 +34,6 @@ import retrofit2.Response
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
-
 
     //Firebase Auth
     private lateinit var auth: FirebaseAuth
@@ -163,7 +163,6 @@ class RegisterActivity : AppCompatActivity() {
 
             } catch (e: ApiException) {
                 Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show()
-
             }
         }
     }
@@ -200,7 +199,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,t.message.toString(),Toast.LENGTH_SHORT).show()
             }
         })
-
     }
 
     override fun onBackPressed() {
