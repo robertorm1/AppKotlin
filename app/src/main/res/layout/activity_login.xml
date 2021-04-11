@@ -16,11 +16,19 @@
         android:padding="20dp">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/ic_splash"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"/>
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingresa a tu cuenta"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:padding="20dp"
+            android:textColor="@color/color_primary_variant"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -41,7 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contraseña"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/ic_lock"
@@ -69,11 +76,19 @@
         <include
             layout="@layout/item_divider_login"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿No tienes cuenta?"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:padding="10dp" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnRegistrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrar"
+            android:text="Registrarse"
             style="@style/ButtonBaseOutline"/>
 
 </LinearLayout>

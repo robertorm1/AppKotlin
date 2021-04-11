@@ -5,4 +5,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="preferences">ACCESO</string>
 
+    <!-- Place Picker plugin -->
+    <string name="selected_place_info">Selected location information:\n%1$s</string>
+    <string name="go_to_picker_activity">Go to place picker activity</string>
+
 </resources>

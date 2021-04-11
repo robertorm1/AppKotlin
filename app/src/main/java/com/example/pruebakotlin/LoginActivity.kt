@@ -61,18 +61,16 @@ class LoginActivity : AppCompatActivity() {
         val email:String=binding.TxtUsuario.text.toString().trim()
         val password:String=binding.TxtPassword.text.toString().trim()
 
-        if(email.isNotEmpty() && password.isEmpty()){
+        if(email.isNotEmpty() && password.isNotEmpty()){
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val intent = Intent(this, HomeActivity::class.java).apply {
-                        putExtra("email", task.result?.user)
 
-                        //GUARDAR DATOS DE USUARIO EN PREFERENCIAS
-                        savePreferences(task.result?.user.toString())
+                    val intent = Intent(this, HomeActivity::class.java)
+                    //GUARDAR DATOS DE USUARIO EN PREFERENCIAS
+                    savePreferences(task.result?.user?.email.toString())
 
-                    }
                     startActivity(intent)
                     finish()
                 } else {
@@ -91,11 +89,6 @@ class LoginActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor =  preferences.edit()
         editor.putString("user", email)
         editor.apply()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
     }
 
 }

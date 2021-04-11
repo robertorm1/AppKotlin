@@ -51,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_person"/>
                 <TextView
+                    android:id="@+id/TxtUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Laura Diaz"
@@ -68,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_email"/>
                 <TextView
+                    android:id="@+id/TxtUserEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="lauradiaz@gmail.com"
@@ -81,6 +83,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/CerrarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cerrar sesion"

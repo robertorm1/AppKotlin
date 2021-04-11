@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <LinearLayout
+                android:id="@+id/LayoutNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:orientation="vertical">
+            <ImageButton
+                android:id="@+id/BtnMapaNormal"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_normal"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Normal"
+                    android:textColor="@android:color/white"
+                    android:background="@color/color_primary"
+                    android:padding="2dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <LinearLayout
+                android:id="@+id/LayoutSatelite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="2dp">
+                <ImageButton
+                    android:id="@+id/BtnMapaHybrido"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_trafico"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Satélite"
+                    android:textColor="@android:color/white"
+                    android:background="@color/color_primary"
+                    android:padding="2dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <LinearLayout
+                android:id="@+id/LayoutRelive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="2dp">
+                <ImageButton
+                    android:id="@+id/BtnMapaTerrain"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_relieve"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Relieve"
+                    android:textColor="@android:color/white"
+                    android:background="@color/color_primary"
+                    android:padding="2dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+</LinearLayout>

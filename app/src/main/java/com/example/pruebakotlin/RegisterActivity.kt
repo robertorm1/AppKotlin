@@ -1,5 +1,6 @@
 package com.example.pruebakotlin
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -57,6 +58,7 @@ class RegisterActivity : AppCompatActivity() {
         })
 
         binding.BtnRegistroUser.setOnClickListener(View.OnClickListener {
+            cargador(true)
             setupRegistro()
         })
 
@@ -92,11 +94,10 @@ class RegisterActivity : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(this,"Usuario registrado", Toast.LENGTH_SHORT).show()
+                            //Guardar datos de usuario
+                            saveUser(User(email,usr,true))
                             val intent = Intent(this,LoginActivity::class.java)
                             startActivity(intent)
-                            //Cerrar sesion de usuario
-                            //Firebase.auth.signOut()
                         } else {
                             ShowAlert(task.exception.toString())
                         }
@@ -152,9 +153,12 @@ class RegisterActivity : AppCompatActivity() {
                     val credential= GoogleAuthProvider.getCredential(account.idToken,null)
                     auth.signInWithCredential(credential).addOnCompleteListener {
                         if (it.isSuccessful){
+
+                            saveUser(User(account.email.toString(),account.givenName.toString(),true))
+                            savePreferences(account.email.toString())
+
                             val intent = Intent(this,HomeActivity::class.java)
                             startActivity(intent)
-                            savePreferences(account.givenName.toString())
                         }else{
                             Toast.makeText(this,it.exception.toString(),Toast.LENGTH_SHORT).show()
                         }
@@ -177,6 +181,7 @@ class RegisterActivity : AppCompatActivity() {
         alert.show()
     }
 
+    //GUARDAR PREFERENCIAS
     private fun savePreferences(email:String){
         //GUARDAR DATOS DE USUARIO EN PREFERENCIAS
         val preferences = getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
@@ -185,20 +190,37 @@ class RegisterActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun saveUser(){
-        val api: serviceRetrofit? = retrofitClass().getIntanciaRetrofit().getService()
-        val user: User = User(binding.TxtEmail.text.toString(),binding.TxtNombreUsuario.text.toString(),true)
-        val call: Call<JsonObject> = api!!.postUserInsert(user)
+    private fun saveUser(user:User){
+
+        val api: serviceRetrofit = retrofitClass.getRestEngine().create(serviceRetrofit::class.java)
+        val call: Call<JsonObject> = api.postUserInsert(user)
+
         call.enqueue(object:Callback<JsonObject>{
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if(response.isSuccessful){
                     Toast.makeText(applicationContext,"Correcto",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
                 }
+                cargador(false)
             }
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Toast.makeText(applicationContext,t.message.toString(),Toast.LENGTH_SHORT).show()
+                cargador(false)
             }
         })
+    }
+
+    fun cargador(estado:Boolean){
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Guardando información")
+        progressDialog.setMessage("por favor espere")
+        progressDialog.setCancelable(false)
+        if (estado){
+            progressDialog.show()
+        }else{
+            progressDialog.dismiss()
+        }
     }
 
     override fun onBackPressed() {

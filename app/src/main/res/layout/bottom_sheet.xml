@@ -7,7 +7,7 @@
     android:background="@drawable/sheet_border"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    app:behavior_peekHeight="60dp"
+    app:behavior_peekHeight="70dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
@@ -21,17 +21,18 @@
         <View
             android:layout_width="70dp"
             android:layout_height="3dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal"
-            android:background="@android:color/darker_gray" />
+            android:background="@drawable/corner_view" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Puntos totales"
             android:textStyle="bold"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:padding="5dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lst_negocios"

@@ -13,7 +13,7 @@ interface serviceRetrofit {
     @FormUrlEncoded
     fun getUserInfo(@Field("email") email:String): Call<JsonObject>
 
-    @GET("insertUser")
+    @POST("insertUser")
     fun postUserInsert(@Body user: User):Call<JsonObject>
 
 }

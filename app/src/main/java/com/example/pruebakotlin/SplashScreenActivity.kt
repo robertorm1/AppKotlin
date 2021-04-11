@@ -28,7 +28,7 @@ class SplashScreenActivity : AppCompatActivity() {
         },3000)
     }
 
-    //GUDAR DATOS DE SESION EN PREFERENCIAS
+    //CONSULTAR DATOS DE PREFERENCIA
     private fun sesion():Boolean{
         val preferences = getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
         val email: String? =preferences.getString("user",null)
