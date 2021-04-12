@@ -11,10 +11,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/topAppBarPlace"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Comfirme ubicación"
+            app:title="Confirme ubicación"
             app:navigationIcon="@drawable/ic_arrow_back"
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
@@ -39,6 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/BtnOpenPlace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/InfoDireccion"
@@ -67,7 +68,7 @@
                 android:textColor="@android:color/white"/>
 
             <ProgressBar
-                android:id="@+id/CargadorDireccion"
+                android:id="@+id/CargadorPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

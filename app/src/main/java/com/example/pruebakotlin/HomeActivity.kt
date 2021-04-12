@@ -59,9 +59,9 @@ class HomeActivity : AppCompatActivity(),IComunica {
               }
               R.id.Buscador -> {
                   //makeCurrentFragment(buscador_fragment)
-                  //bottomDialog()
                   val intent=Intent(this,PlaceActivity::class.java)
                   startActivity(intent)
+                  finish()
               }
               R.id.Perfil -> {
                   makeCurrentFragment(perfil_fragment)
@@ -79,14 +79,6 @@ class HomeActivity : AppCompatActivity(),IComunica {
             commit()
         }}
 
-
-    private fun bottomDialog(){
-        val dialog = BottomSheetDialog(this,R.style.BottomSheetDialogTheme)
-        val bottomSheet = layoutInflater.inflate(R.layout.activity_negocio, null)
-        dialog.setContentView(bottomSheet)
-        dialog.show()
-
-    }
 
     private fun ValidarPermiso(): Boolean {
         if (ActivityCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&

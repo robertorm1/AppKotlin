@@ -31,9 +31,9 @@ class NegocioAdapter (private val items:ArrayList<Negocio>):
         private val TxtNombre=view.findViewById<TextView>(R.id.TxtNombre)
 
         fun bind (negocioItem: Negocio){
-            ImageView.setImageResource(negocioItem.Foto)
+            //ImageView.setImageResource(negocioItem.Foto)
             TxtDireccion.text=negocioItem.Direccion
-            TxtNombre.text=negocioItem.Nombre
+            TxtNombre.text=negocioItem.NombreLocal
         }
 
     }

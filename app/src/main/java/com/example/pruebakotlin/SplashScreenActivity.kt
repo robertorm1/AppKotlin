@@ -20,9 +20,11 @@ class SplashScreenActivity : AppCompatActivity() {
             if (sesion()) {
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
+                finish()
             }else{
                 val intent = Intent(this, OnboardingActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
         },3000)

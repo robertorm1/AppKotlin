@@ -12,21 +12,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pruebakotlin.Negocio.Adapters.NegocioAdapter
 import com.example.pruebakotlin.Negocio.Interfaces.IComunica
 import com.example.pruebakotlin.Persistencia.Entity.Negocio
+import com.example.pruebakotlin.Persistencia.Retrofit.retrofitClass
+import com.example.pruebakotlin.Persistencia.Retrofit.serviceRetrofit
 import com.example.pruebakotlin.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -40,6 +43,9 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener {
 
@@ -50,9 +56,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
     private lateinit var markerViewManager: MarkerViewManager
     private lateinit var markerView: MarkerView
 
+    //Lista de PV
+    val negocio: ArrayList<Negocio> = ArrayList()
+    var lst:RecyclerView? = null
+
     //Coordenadas de ubicación actual
     private lateinit var  originLocation: LatLng
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +82,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         //REFERENCIA AL LAYOUT INCLUDE
         val view = rootView!!.findViewById<LinearLayout>(R.id.include_bottom_sheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(view)
-        val lst=view.findViewById<RecyclerView>(R.id.lst_negocios)
+        lst=view.findViewById<RecyclerView>(R.id.lst_negocios)
 
         bottomSheetBehavior.addBottomSheetCallback(object :BottomSheetBehavior.BottomSheetCallback(){
             override fun onStateChanged(bottomSheet: View, state: Int) {
@@ -102,78 +111,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         }
 
 
-        val negocio: ArrayList<Negocio> = ArrayList()
-        negocio.add(
-            Negocio(
-                "Sucursal1",
-                "Libertad 22",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal2",
-                "Morelos",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal3",
-                "5 de mayo",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal4",
-                "condominio iris 22",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal5",
-                "Benito Juarez",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal6",
-                "Lopez Rayon",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal7",
-                "Aldama",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal8",
-                "Allende",
-                R.drawable.ic_man
-            )
-        )
-        negocio.add(
-            Negocio(
-                "Sucursal9",
-                "Lopez mateos",
-                R.drawable.ic_man
-            )
-        )
-
-        val adapter =
-            NegocioAdapter(negocio)
-        val layoutManager:RecyclerView.LayoutManager=LinearLayoutManager(context)
-        lst.layoutManager=layoutManager
-        lst.adapter=adapter
-
-
         return rootView
     }
 
@@ -189,7 +126,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
     }
 
     override fun onMapClick(point: LatLng): Boolean {
-        addMarker(point,2)
         return false
     }
 
@@ -211,14 +147,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         imageView.layoutParams = params
         markerView = MarkerView(LatLng(location.latitude, location.longitude), imageView)
         imageView.setOnClickListener {
-            openDialog()
+            val position:Int = imageView.tag as Int
+            openDialog(position)
         }
         markerViewManager.addMarker(markerView)
     }
 
-    private fun openDialog() {
+    private fun openDialog(position:Int) {
         val dialog = Dialog(activity as Activity)
         dialog.setContentView(R.layout.dialog_detail)
+        val Local=dialog.findViewById<TextView>(R.id.TxtLocal)
+        val Dueño=dialog.findViewById<TextView>(R.id.TxtDueño)
+        val Direccion=dialog.findViewById<TextView>(R.id.TxtDireccionDetail)
+
+        Local.text=negocio.get(position).NombreLocal
+        Dueño.text=negocio.get(position).NombreDueño
+        Direccion.text=negocio.get(position).Direccion
+
         dialog.show()
     }
 
@@ -283,11 +228,62 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
             locationComponent.renderMode = RenderMode.COMPASS
             originLocation = LatLng(locationComponent.lastKnownLocation)
             setCameraPosition(originLocation)
+            getNegocio()
 
         }
         else{
             Toast.makeText(activity as Activity, "Faltan permisos de Ubicación, cierre la aplicación y vuelva a iniciarla", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun getNegocio(){
+        val api: serviceRetrofit = retrofitClass.getRestEngine().create(serviceRetrofit::class.java)
+        val call: Call<JsonObject> = api.getNegocio()
+
+        call.enqueue(object:Callback<JsonObject>{
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if (response.isSuccessful){
+                    val json: JsonObject? = response.body()
+                    val status:Boolean = json?.get("status")!!.asBoolean
+                    if(status) {
+                        val jsonArray: JsonArray = json.get("response")!!.asJsonArray
+                        negocio.clear()
+
+                        for(jsonElement: JsonElement in jsonArray){
+                            val jsonObject = jsonElement.asJsonObject
+
+                            val id_negocio = jsonObject.get("id_negocio").asInt
+                            val name_dueño = jsonObject.get("nombre_dueño").asString
+                            val name_local = jsonObject.get("nombre_local").asString
+                            val direccion = jsonObject.get("direccion_negocio").asString
+                            val latitud = jsonObject.get("latitud").asDouble
+                            val longitud = jsonObject.get("longitud").asDouble
+
+                            negocio.add(
+                                Negocio(
+                                    id_negocio,direccion,name_local,name_dueño,jsonArray.size()-1,latitud,longitud
+                                )
+                            )
+                            //addMarker(LatLng(latitud,longitud),id_negocio)
+                        }
+
+                        val adapter =
+                            NegocioAdapter(negocio)
+                        val layoutManager:RecyclerView.LayoutManager=LinearLayoutManager(context)
+                        lst?.addItemDecoration(DividerItemDecoration(activity,LinearLayout.VERTICAL))
+                        lst?.layoutManager=layoutManager
+                        lst?.adapter=adapter
+
+                    }else{
+                        Toast.makeText(context,"No se econtro información", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Toast.makeText(activity,t.message.toString(),Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
     override fun onResume() {

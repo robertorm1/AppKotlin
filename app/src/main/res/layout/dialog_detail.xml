@@ -12,6 +12,7 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/TxtLocal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="MODELORAMA"
@@ -31,6 +32,7 @@
                     android:gravity="center"
                     android:layout_margin="5dp"/>
                 <TextView
+                    android:id="@+id/TxtDireccionDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gardenia 118, Obrera 118, Obrera 118, Obrera 118, Obrera 118, Obrera"
@@ -46,13 +48,14 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_time"
+                    android:background="@drawable/ic_person"
                     android:gravity="center"
                     android:layout_margin="5dp"/>
                 <TextView
+                    android:id="@+id/TxtDueño"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="8hrs - 7hrs"
+                    android:text="Laura Diaz"
                     android:layout_gravity="center_vertical"/>
 
             </LinearLayout>
