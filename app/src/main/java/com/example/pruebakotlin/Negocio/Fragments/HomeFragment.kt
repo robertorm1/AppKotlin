@@ -119,7 +119,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         mapboxMap.uiSettings.isRotateGesturesEnabled = false
 
         mapboxMap.setStyle(Style.TRAFFIC_DAY) { style ->
-            enabledLocation(style)
+            if(ValidarPermiso()) {
+                enabledLocation(style)
+            }
         }
 
     }
@@ -227,9 +229,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
     }
 
 
-        @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission")
     private fun enabledLocation(loadedMapStyle: Style) {
-        if (ValidarPermiso()) {
+
             val locationComponent = mapboxMap.locationComponent
             locationComponent.activateLocationComponent(
                 LocationComponentActivationOptions.builder(activity as Activity, loadedMapStyle)
@@ -243,14 +245,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
             setCameraPosition(originLocation)
             getNegocio()
 
-        }
-        else{
-            Toast.makeText(
-                activity as Activity,
-                "Faltan permisos de Ubicación, cierre la aplicación y vuelva a iniciarla",
-                Toast.LENGTH_LONG
-            ).show()
-        }
     }
 
     private fun getNegocio(){

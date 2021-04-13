@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PruebaKotlin</string>
+    <string name="app_name">AppMarker</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoicm9iZXJ0b3JtMSIsImEiOiJja2Y5eDFvNXQwN3l2MzFwZXUxZjcxYmwyIn0.YVFdxh_STk9INOBjeKRi9Q</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

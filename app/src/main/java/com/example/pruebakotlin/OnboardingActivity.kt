@@ -35,7 +35,7 @@ class OnboardingActivity : AppCompatActivity() {
         setCurrentIndicator(0)
 
         BtnFin.setOnClickListener{
-            val intent = Intent(applicationContext,LoginActivity::class.java)
+            val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent)
             finish()
         }

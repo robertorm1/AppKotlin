@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import butterknife.BindView
 import com.example.pruebakotlin.Negocio.Fragments.BuscadorFragment
@@ -81,12 +82,12 @@ class HomeActivity : AppCompatActivity(),IComunica {
 
 
     private fun ValidarPermiso(): Boolean {
-        if (ActivityCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, permission.INTERNET)==PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, permission.INTERNET)==PackageManager.PERMISSION_GRANTED) {
             return true
         } else {
-            requestPermissions(PERMISOS, 100)
+           requestPermissions(PERMISOS, 100)
         }
         return false
     }
@@ -134,6 +135,14 @@ class HomeActivity : AppCompatActivity(),IComunica {
                         finish()
                     }
                 }
+            }
+        }else{
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                && grantResults[2] == PackageManager.PERMISSION_GRANTED){
+                //Los permisos fueren aceptados
+            }else{
+                //Los permisos fueron rechazados
             }
         }
     }

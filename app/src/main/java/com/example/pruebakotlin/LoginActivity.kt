@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 
 class LoginActivity : AppCompatActivity() {
 
@@ -29,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Firebase.initialize(this)
         //INICIALIAR FIREBASE AUTH
         auth = Firebase.auth
 

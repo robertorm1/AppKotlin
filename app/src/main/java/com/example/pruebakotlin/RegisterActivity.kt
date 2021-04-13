@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,6 +49,7 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Firebase.initialize(this)
         //INICIALIAR FIREBASE AUTH
         auth = Firebase.auth
 
