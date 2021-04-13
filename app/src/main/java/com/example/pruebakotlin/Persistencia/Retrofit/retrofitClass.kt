@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
      companion object {
 
-         private val urlBase:String="http://192.168.1.82:4000/"
+         private val urlBase:String="https://appmarker.herokuapp.com/"
 
          fun getRestEngine(): Retrofit {
              val retrofit = Retrofit.Builder()

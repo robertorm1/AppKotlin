@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -25,6 +26,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.JsonObject
 import com.mapbox.android.gestures.AndroidGesturesManager
 import com.mapbox.android.gestures.MoveGestureDetector
@@ -70,6 +72,8 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
     //Coordenadas de ubicación actual
     private lateinit var  originLocation: LatLng
 
+    private lateinit var progressDialog:ProgressDialog
+
     //ViewBinding
     private lateinit var binding: ActivityPlaceBinding
 
@@ -93,10 +97,12 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
             bottomDialog()
         }
 
+        dialogInicio()
     }
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
         mapboxMap.uiSettings.isRotateGesturesEnabled = false
+        mapboxMap.uiSettings.isZoomGesturesEnabled=false
 
         mapboxMap.setStyle(Style.TRAFFIC_DAY) { style ->
 
@@ -189,7 +195,7 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
             servicesException.printStackTrace()
             binding.CargadorPlace.visibility=View.GONE
             binding.TxtDescripcion.visibility=View.VISIBLE
-            binding.TxtDescripcion.text="Error al Obtener la drireccion"
+            binding.TxtDescripcion.text="Error al obtener la dirirección"
         }
     }
 
@@ -272,11 +278,12 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
                      originLocation.latitude,
                      originLocation.longitude
                 )
-
+                dialog.dismiss()
+                cargador()
                 postNegocio(negocio)
 
             } else {
-                Toast.makeText(this, "Favor de llemar todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Favor de llenar todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -290,14 +297,17 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
         call.enqueue(object :Callback<JsonObject>{
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if(response.isSuccessful){
+                    progressDialog.dismiss()
                     Toast.makeText(applicationContext,"Guardado",Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
                 }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Toast.makeText(applicationContext,t.message.toString(),Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
             }
 
         })
@@ -310,16 +320,28 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
         return id
     }
 
-    fun cargador(estado:Boolean){
-        val progressDialog = ProgressDialog(this)
+    fun cargador(){
+        progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Guardando información")
-        progressDialog.setMessage("por favor espere")
+        progressDialog.setMessage("Por favor espere")
         progressDialog.setCancelable(false)
-        if (estado){
-            progressDialog.show()
-        }else{
-            progressDialog.dismiss()
-        }
+        progressDialog.show()
+
+    }
+    fun dialogInicio() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Instruciones")
+            .setMessage("Mueve el mapa para ajustar la ubicación")
+            .setCancelable(false)
+            .setPositiveButton("Aceptar") { dialog, which ->
+                reverseGeocode(
+                    Point.fromLngLat(
+                        originLocation.longitude,
+                        originLocation.latitude
+                    )
+                )
+            }
+            .show()
     }
 
     override fun onResume() {

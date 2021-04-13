@@ -98,6 +98,7 @@ class RegisterActivity : AppCompatActivity() {
                             saveUser(User(email,usr,true))
                             val intent = Intent(this,LoginActivity::class.java)
                             startActivity(intent)
+                            finish()
                         } else {
                             ShowAlert(task.exception.toString())
                         }
@@ -159,6 +160,7 @@ class RegisterActivity : AppCompatActivity() {
 
                             val intent = Intent(this,HomeActivity::class.java)
                             startActivity(intent)
+                            finish()
                         }else{
                             Toast.makeText(this,it.exception.toString(),Toast.LENGTH_SHORT).show()
                         }
