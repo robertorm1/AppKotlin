@@ -32,7 +32,7 @@ class PerfilFragment : Fragment() {
     ): View {
         _binding = FragmentPerfilBinding.inflate(inflater,container,false)
 
-        validate()
+        getInfo()
 
         binding.CerrarSesion.setOnClickListener{
             removePrefereces()
@@ -41,66 +41,11 @@ class PerfilFragment : Fragment() {
         return binding.root
     }
 
-
-    private fun getUser(){
-        val api: serviceRetrofit = retrofitClass.getRestEngine().create(serviceRetrofit::class.java)
-        val call: Call<JsonObject> = api.getUserInfo(getEmail())
-
-        call.enqueue(object :Callback<JsonObject>{
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (response.isSuccessful){
-                    val json: JsonObject? = response.body()
-                    val status:Boolean = json?.get("status")!!.asBoolean
-                    if(status) {
-                        val jsonArray: JsonArray = json.get("response")!!.asJsonArray
-                        val jsonObject: JsonObject = jsonArray.get(0).asJsonObject
-                        val id_usr = jsonObject.get("id_usuario").asInt
-                        val name_usr = jsonObject.get("nombre_usuario").asString
-
-                        binding.TxtUserEmail.text = getUser().toString()
-                        binding.TxtUserName.text = name_usr
-
-                        savePreferences(id_usr,name_usr)
-                    }else{
-                        Toast.makeText(context,"No se econtro información", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(context,t.message.toString(), Toast.LENGTH_SHORT).show()
-            }
-
-        })
-
-    }
-
-    //CONSULTAR DATOS DE PREFERENCIA
-    private fun getEmail():String{
+    //VALIDACIÓN DE INFORMACION GUARDADA
+    private fun getInfo(){
         val preferences = activity?.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
-        val email: String? = preferences?.getString("user",null)
-        return email.toString();
-    }
-
-    //VALIDACION DE INFORMACION GUARDADA
-    private fun validate(){
-        val preferences = activity?.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
-        val name=preferences?.getString("name",null)
-        if (name!=null) {
-            binding.TxtUserEmail.text = preferences.getString("user", null)
-            binding.TxtUserName.text = preferences.getString("name", null)
-        }else{
-            getUser()
-        }
-    }
-
-    //GAURDAR DATOS DE USUARIO
-    private fun savePreferences(id:Int,name:String){
-        //GUARDAR DATOS DE USUARIO EN PREFERENCIAS
-        val preferences = activity?.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor =  preferences!!.edit()
-        editor.putInt("id", id)
-        editor.putString("name",name)
-        editor.apply()
+        binding.TxtUserEmail.text = preferences?.getString("user", null)
+        binding.TxtUserName.text = preferences?.getString("name", null)
     }
 
     //LIMPIAR PREFERENCES

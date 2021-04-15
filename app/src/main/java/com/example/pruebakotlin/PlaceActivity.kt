@@ -379,6 +379,5 @@ class PlaceActivity : AppCompatActivity(),OnMapReadyCallback{
         mapView?.onSaveInstanceState(outState)
     }
 
-
 }
 

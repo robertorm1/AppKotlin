@@ -4,11 +4,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,6 +103,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         mapView = rootView!!.findViewById(R.id.mapView1)
         mapView?.getMapAsync(this)
 
+        if(getStatus()==false){
+            getUser()
+        }
+
         BtnLayer.setOnClickListener {
             layerMap()
         }
@@ -143,8 +148,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
         markerViewManager = MarkerViewManager(mapView, mapboxMap)
         val imageView = ImageView(activity as Activity)
         imageView.tag=tag
-        imageView.setImageResource(R.mipmap.ic_marker)
-        val params = LinearLayout.LayoutParams(100, 100)
+        imageView.setImageResource(R.drawable.ic_marker)
+        val params = LinearLayout.LayoutParams(200, 200)
         imageView.layoutParams = params
         markerView = MarkerView(LatLng(location.latitude, location.longitude), imageView)
         imageView.setOnClickListener {
@@ -310,6 +315,59 @@ class HomeFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListene
             }
 
         })
+    }
+
+    private fun getUser(){
+        val api: serviceRetrofit = retrofitClass.getRestEngine().create(serviceRetrofit::class.java)
+        val call: Call<JsonObject> = api.getUserInfo(getEmail())
+
+        call.enqueue(object :Callback<JsonObject>{
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if (response.isSuccessful){
+                    val json: JsonObject? = response.body()
+                    val status:Boolean = json?.get("status")!!.asBoolean
+                    if(status) {
+                        val jsonArray: JsonArray = json.get("response")!!.asJsonArray
+                        val jsonObject: JsonObject = jsonArray.get(0).asJsonObject
+                        val id_usr = jsonObject.get("id_usuario").asInt
+                        val name_usr = jsonObject.get("nombre_usuario").asString
+                        savePreferences(id_usr,name_usr)
+
+                    }else{
+                        Toast.makeText(context,"No se encontro información", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Toast.makeText(context,t.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+    //CONSULTAR DATOS DE PREFERENCIA
+    private fun getEmail():String{
+        val preferences = activity?.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
+        val email: String? = preferences?.getString("user",null)
+        return email.toString();
+    }
+
+    //GUARDAR DATOS DE USUARIO
+    private fun savePreferences(id:Int,name:String){
+        //GUARDAR DATOS DE USUARIO EN PREFERENCIAS
+        val preferences = activity?.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor =  preferences!!.edit()
+        editor.putInt("id", id)
+        editor.putString("name",name)
+        editor.putBoolean("statuUser",true)
+        editor.apply()
+    }
+
+    //VALIDAR INFORMACIÓN DE USUARIO
+    private fun getStatus (): Boolean? {
+        val preferences = activity?.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
+        val status:Boolean? = preferences?.getBoolean("statuUser",false)
+        return status
     }
 
     override fun onResume() {
